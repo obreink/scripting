@@ -1,4 +1,9 @@
 #!bin/bash
 
 
-echo "hello welcome to shebang"
+for directory in $(cat directories.txt)
+do 
+
+mkdir $i
+
+done
