@@ -1,17 +1,17 @@
 #!/bin/bash
 #Header
 
-      #Purpose: Creating scripts in bash enviroment
-      #creator: obrein kachiri
+      #Purpose: Creating A linux Menu System in Bash using functions ,grep and awk and conditional statement
+      #creator: Tinevimbo brein kachiri
       #version:1
-      #Date:20.04.2026
+      #Date:03.04.2026
       #Copyright
 
 #body of script  
 while true 
 
 do
-       echo "--------------Welcome TO Linux Ubuntu Menu--------------------------"
+       echo "--------------Welcome TO Linux Ubuntu Menu-------------------------------------"
        echo "1.System Information"
        echo "2.Disk Information"
        echo "3.File Management"
@@ -37,21 +37,12 @@ do
         echo "Invalid option.  choose Again" ;;
 
         
-
-
-
-
        esac
-
-
-
-
-
 
 
 System_Information() {
 
-      echo "------------System Information--------------------"
+      echo "------------System Information---------------------------------------------"
       echo "1. Hostname "
       echo "2. Username"
       echo "3. Kernel Version"
@@ -74,7 +65,7 @@ System_Information() {
         
         ;;
 
-        4)
+        4) who ;;
 
 
 
@@ -89,10 +80,10 @@ System_Information() {
        esac
 }
 
-Disk_Management(){
+Disk_Management(){   #function to call the disk management sub menu
 
 
-   echo "--------------Disk Management-------------------------------"
+   echo "--------------Disk Management----------------------------------------------------"
    echo "1. Disk Usage"
    echo "2. Memory Usage"
    echo "3. CPU Top Processes"
@@ -101,10 +92,18 @@ Disk_Management(){
 
    case $option3 in 
 
-   1)
+   1)    freememory=`free -m | awk 'NR==2 {print $4}'`
 
+        if [[ $freememory -lt 1000 ]] 
+         then
 
-   2)
+         echo "Storage Space low. Delete some Files"
+
+       else
+           echo "Free Memory $memory"
+
+   2)  memoryusage=free -h | awk '/Mem:/ {print "Memory used: ", $3 } '
+      echo "$memoryusage"
 
    3)
 
@@ -124,7 +123,7 @@ Disk_Management(){
 
 File_Management() {
 
-    echo "------------------File Management--------------"
+    echo "------------------File Management------------------------------------------"
     echo "1. Create Text File"
     echo "2. Create A Directory"
     echo "3. Backup Directory"
@@ -148,10 +147,8 @@ File_Management() {
     2)
        read -p "Enter Directory Name: " dirname
 
-       if [[ -d dirname  ]]
+       if [[ -d $dirname  ]]
        then
-       
-           
            echo "Directory with that name already exits."
         else
             mkdir $dirname
@@ -161,10 +158,25 @@ File_Management() {
     ;;
 
     3)   
-       read -p "Enter directory you wish to back up"  backup
-       read -p "Enter Directory location for backup"  backupfilepath
-       
-    
+     read -p "Enter directory you wish to back up: " backup
+     read -p "Enter directory location for backup: " backupfilepath
+
+     if [[ -d "$backup" ]]
+     then
+
+          if [[ -d $backupfilepath ]]
+          then
+                  cp -r $backup/$backupfilepath
+                  echo "Backup created successfully in: $backupfilepath"
+            else
+                echo "Backup destination does not exist."
+             fi
+
+      else
+           echo "Backup File directory does not exist."
+           
+     fi
+
     
     
     
@@ -183,9 +195,11 @@ File_Management() {
 
 User_Management() {
      
-    echo "----------------User Management------------------------------"
+    echo "----------------User Management----------------------------------------------"
     echo "1. Create A user"
     echo "2. Delete a user "
+    echo "3. View Users "
+    
      
     read -p "Choose Option" option4
 
@@ -206,6 +220,12 @@ User_Management() {
 
 
        ;;
+
+
+       3)
+
+            users=grep '' /etc/passwd | awk -F : '{print $1}'
+            echo "$users"       
        
        *)
 
