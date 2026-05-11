@@ -27,7 +27,7 @@ System_Information() {
            ken_version=$(awk '{print $3}' /proc/version)
            echo "$ken_version"
            ;;
-        4) who ;;
+        4) whoami ;;
         5) echo "Date & Time: $(date)" ;;
         *)
            echo "Invalid Option"
@@ -36,7 +36,7 @@ System_Information() {
 }
 
 
-Disk_Management() {
+Disk_Management() { #function for the sub menu part for the disk management 
 
    echo "--------------Disk Management----------------------------------------------------"
    echo "1. Disk Usage"
@@ -48,12 +48,13 @@ Disk_Management() {
    case $option3 in 
 
    1)
-        freememory=$(free -m | awk 'NR==2 {print $4}')
+        freememory=$(free -m | awk 'NR==2 {print $4}')  #assigning variable to enviroment variable to hold the free memory
 
-        if [[ $freememory -lt 1000 ]]; then
-            echo "Storage Space low. Delete some Files"
+        if [[ $freememory -lt 1000 ]]   #match statement to check if memory found is less than 1gb
+        then
+            echo "Storage Space low. Delete some Files"   
         else
-            echo "Free Memory: $freememory MB"
+            echo "Free Memory: $freememory GB"   #statement to run if the memory is above 1gb
         fi
         ;;
    
@@ -66,16 +67,16 @@ Disk_Management() {
         top
         ;;
    
-   *)
+   *)   #option if the user enters a number that is noot betweeen 1 -3 
         echo "Invalid option"
         ;;
    esac
 }
 
 
-File_Management() {
+File_Management() {  #function to create a sub menu that will run inside the main Menu in the while loop 
 
-    echo "------------------File Management------------------------------------------"
+    echo "------------------File Management-------------------------------"
     echo "1. Create Text File"
     echo "2. Create A Directory"
     echo "3. Backup Directory"
@@ -87,39 +88,39 @@ File_Management() {
     1)
         read -p "Enter Filename: " fname
 
-        if [[ -f $fname ]]; then
+        if [[ -f $fname ]]
+        then
             echo "File name already exists in this directory"
         else
             touch "$fname"
-            echo "$fname has been created"
+            echo "File created successfully."
         fi
         ;; 
     
     2)
         read -p "Enter Directory Name: " dirname
 
-        if [[ -d $dirname ]]; then
+        if [[ -d $dirname ]]
+        then
             echo "Directory with that name already exists."
         else
             mkdir "$dirname"
-            echo "$dirname has been created"
+            echo "Directory $dirname has been created "
         fi
         ;;
 
     3)
-        read -p "Enter directory you wish to back up: " backup
-        read -p "Enter directory location for backup: " backupfilepath
-
-        if [[ -d "$backup" ]]; then
-            if [[ -d "$backupfilepath" ]]; then
-                cp -r "$backup" "$backupfilepath"
-                echo "Backup created successfully in: $backupfilepath"
-            else
-                echo "Backup destination does not exist."
-            fi
+        read -p "Enter directory you wish to back up:" backup
+        read -p "Enter directory  file location for backup:" backupfilepath
+        if [[ -d "$backup" && -d "$backupfilepath" ]]
+        then
+             cp -r "$backup" "$backupfilepath"
+              echo "Backup created successfully in: $backupfilepath"
         else
-            echo "Backup File directory does not exist."
-        fi
+              echo "Directories do not exist."
+
+       fi
+
         ;;
     
     *)
@@ -129,7 +130,7 @@ File_Management() {
 }
 
 
-User_Management() {
+User_Management() {  #function  to separate the program and print out a sub menu for user management
      
     echo "----------------User Management----------------------------------------------"
     echo "1. Create A user"
@@ -164,9 +165,9 @@ User_Management() {
 
 
 
-# ---------------- MAIN MENU LOOP ----------------
 
-while true
+
+while true  #unconditional statement to run as long the user is Running the main menu 
 do
        echo "--------------Welcome TO Linux Ubuntu Menu-------------------------------------"
        echo "1.System Information"
@@ -178,13 +179,14 @@ do
 
        case $option in
 
-        1) System_Information ;;
-        2) Disk_Management ;;
-        3) File_Management ;;
-        4) User_Management ;;
+        1) System_Information ;;   #function name to call the system information sub menu in the loop
+         2) Disk_Management ;;
+        3)   File_Management ;;
+        4)     
+            User_Management ;;
         *)
-           echo "Invalid option. Choose Again"
-           ;;
+           echo "Invalid option. Choose Again"   #wild case to run if you enters any number that is not 1 - 4
+           ;; 
        esac
 
 done
