@@ -3,12 +3,12 @@
 
 #Purpose: Creating A linux Menu System in Bash using functions ,grep and awk and conditional statement
 #creator: Tinevimbo brein kachiri
-#version:1
-#Date:03.04.2026
+#version:1.1
+#Date:03.05.2026
 #Copyright
 
 
-System_Information() {
+System_Information() {  #function to allow sub menu for system information part 
 
       echo "------------System Information---------------------------------------------"
       echo "1. Hostname "
@@ -19,9 +19,9 @@ System_Information() {
 
       read -p "Choose Option: " option2
 
-      case $option2 in
+      case $option2 in  #case statement in function to function as menu inside this function 
 
-        1) hostname ;;
+        1) hostname ;;  #enviroment variables to get hostname from the operating system
         2) whoami ;;
         3) 
            ken_version=$(awk '{print $3}' /proc/version)
@@ -32,8 +32,8 @@ System_Information() {
         *)
            echo "Invalid Option"
            ;;
-      esac
-}
+      esac    #closing of the case statement
+} #end of function
 
 
 Disk_Management() { #function for the sub menu part for the disk management 
@@ -45,7 +45,7 @@ Disk_Management() { #function for the sub menu part for the disk management
 
    read -p "Select Option: " option3
 
-   case $option3 in 
+   case $option3 in #case statement to function as a menu for the disk mananagement menu
 
    1)
         freememory=$(free -m | awk 'NR==2 {print $4}')  #assigning variable to enviroment variable to hold the free memory
@@ -54,8 +54,8 @@ Disk_Management() { #function for the sub menu part for the disk management
         then
             echo "Storage Space low. Delete some Files"   
         else
-            echo "Free Memory: $freememory GB"   #statement to run if the memory is above 1gb
-        fi
+            echo "Free Memory: $freememory"   #statement to run if the memory is above 1gb
+        fi #end of if statement
         ;;
    
    2)
@@ -70,8 +70,8 @@ Disk_Management() { #function for the sub menu part for the disk management
    *)   #option if the user enters a number that is noot betweeen 1 -3 
         echo "Invalid option"
         ;;
-   esac
-}
+   esac #end of case block
+}  #end of function
 
 
 File_Management() {  #function to create a sub menu that will run inside the main Menu in the while loop 
@@ -112,9 +112,9 @@ File_Management() {  #function to create a sub menu that will run inside the mai
     3)
         read -p "Enter directory you wish to back up:" backup
         read -p "Enter directory  file location for backup:" backupfilepath
-        if [[ -d "$backup" && -d "$backupfilepath" ]]
+        if [[ -d "$backup" && -d "$backupfilepath" ]]   #if statemement to check if directory exits and file path for backed up exists 
         then
-             cp -r "$backup" "$backupfilepath"
+             cp -r "$backup" "$backupfilepath"  #copy the directory and its contents into the the specified location
               echo "Backup created successfully in: $backupfilepath"
         else
               echo "Directories do not exist."
@@ -126,8 +126,8 @@ File_Management() {  #function to create a sub menu that will run inside the mai
     *)
         echo "Invalid Option"
         ;;
-    esac
-}
+    esac  # end of case statement
+}  #end of function
 
 
 User_Management() {  #function  to separate the program and print out a sub menu for user management
@@ -139,7 +139,7 @@ User_Management() {  #function  to separate the program and print out a sub menu
     
     read -p "Choose Option: " option4
 
-    case $option4 in
+    case $option4 in #case staement to function as a memu for the user mananagement menu
 
       1)
         read -p "Enter New Users Name: " uname
@@ -161,7 +161,7 @@ User_Management() {  #function  to separate the program and print out a sub menu
         echo "Invalid Option"
         ;;
     esac
-}
+}   #end of function 
 
 
 
@@ -175,18 +175,18 @@ do
        echo "3.File Management"
        echo "4.User Management"
 
-       read -p "Select Menu Option: " option
+       read -p "Select Menu Option: " option   # prompts the user the choice for administrative task the user wants to perfom 
 
-       case $option in
+       case $option in #case statement to function as the main menu thats get run first by the user at the start of the program.
 
         1) System_Information ;;   #function name to call the system information sub menu in the loop
          2) Disk_Management ;;
-        3)   File_Management ;;
+        3)     File_Management ;;  #calling the function file management inside the main menu to print the sub menu for file mananagement
         4)     
             User_Management ;;
         *)
            echo "Invalid option. Choose Again"   #wild case to run if you enters any number that is not 1 - 4
            ;; 
-       esac
+       esac  # end of case statement
 
-done
+done  #end of while loop
