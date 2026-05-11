@@ -27,7 +27,9 @@ System_Information() {  #function to allow sub menu for system information part
            ken_version=$(awk '{print $3}' /proc/version)
            echo "$ken_version"
            ;;
-        4) whoami ;;
+        4) w ;;
+
+        
         5) echo "Date & Time: $(date)" ;;
         *)
            echo "Invalid Option"
@@ -43,7 +45,7 @@ Disk_Management() { #function for the sub menu part for the disk management
    echo "2. Memory Usage"
    echo "3. CPU Top Processes"
 
-   read -p "Select Option: " option3
+   read -p "Select Option: " option3  #prompt for submenu to allow user to enter option 
 
    case $option3 in #case statement to function as a menu for the disk mananagement menu
 
@@ -114,7 +116,7 @@ File_Management() {  #function to create a sub menu that will run inside the mai
         read -p "Enter directory  file location for backup:" backupfilepath
         if [[ -d "$backup" && -d "$backupfilepath" ]]   #if statemement to check if directory exits and file path for backed up exists 
         then
-             cp -r "$backup" "$backupfilepath"  #copy the directory and its contents into the the specified location
+               cp -r "$backup" "$backupfilepath"  #copy the directory and its contents into the the specified location
               echo "Backup created successfully in: $backupfilepath"
         else
               echo "Directories do not exist."
