@@ -58,7 +58,7 @@ System_Information() {
 
         2)  whoami ;;
 
-        3)  ken_version=$(grep  "version " /proc/version | awk '{print $2}')
+        3)  ken_version=$(awk '{print $3}' /proc/version')
 
         
         echo "$Ken_version"
@@ -94,6 +94,7 @@ Disk_Management(){   #function to call the disk management sub menu
 
    1)    freememory=`free -m | awk 'NR==2 {print $4}'`
 
+
         if [[ $freememory -lt 1000 ]] 
          then
 
@@ -102,9 +103,11 @@ Disk_Management(){   #function to call the disk management sub menu
        else
            echo "Free Memory $memory"
 
-   2)  memoryusage=free -h | awk '/Mem:/ {print "Memory used: ", $3 } '
-      echo "$memoryusage"
+   2)   memoryusage=$(free -h | awk '/Mem:/ {print "Memory used:", $3}')
+   
+        echo "$memoryusage";;
 
+   
    3)
 
 
